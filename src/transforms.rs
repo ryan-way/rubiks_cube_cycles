@@ -49,6 +49,96 @@ pub fn rotate_180<T: Copy>(vector: &mut Vec<Vec<T>>) {
     reverse_rows(vector);
 }
 
+fn assign_plane<T: Copy>(first: &mut Square<T>, second: &Square<T>) {
+    first
+        .iter_mut()
+        .flatten()
+        .zip(second.iter().flatten())
+        .for_each(|(f, s)| *f = *s);
+}
+
+pub fn get_x_y_plane<T: Copy>(cube: &mut Vec<Vec<Vec<T>>>, idx: usize) -> Vec<Vec<T>> {
+    if cube.len() < idx {
+        panic!("Index {} is out of bounds for cube length: {}", idx, cube.len());
+    }
+    cube
+        .iter()
+        .skip(idx)
+        .take(1)
+        .map(|x| x.clone())
+        .flatten()
+        .collect()
+
+}
+
+pub fn set_x_y_plane<T: Copy>(cube: &mut Cube<T>, square: &Square<T>, idx: usize) {
+    cube
+        .iter_mut()
+        .skip(idx)
+        .take(1)
+        .flatten()
+        .flatten()
+        .zip(square.iter().flatten())
+        .for_each(|(c, s)| *c = *s);
+}
+
+pub fn get_y_z_plane<T: Copy>(cube: &mut Vec<Vec<Vec<T>>>, idx: usize) -> Vec<Vec<T>> {
+    cube
+        .iter()
+        .map(|square| square
+             .iter()
+             .flatten()
+             .skip(idx)
+             .step_by(square.len())
+             .copied()
+             .collect())
+        .collect()
+}
+
+pub fn set_y_z_plane<T: Copy>(cube: &mut Cube<T>, square: &Square<T>, idx: usize) {
+    cube
+        .iter_mut()
+        .map::<Line<&mut T>, _>(|square| {
+            let size = square.len();
+            square
+             .iter_mut()
+             .flatten()
+             .skip(idx)
+             .step_by(size)
+             .collect()
+        })
+        .flatten()
+        .zip(square.iter().flatten())
+        .for_each(|(c, s)| *c = *s);
+}
+
+pub fn get_x_z_plane<T: Copy>(cube: &mut Vec<Vec<Vec<T>>>, idx: usize) -> Vec<Vec<T>> {
+    cube
+        .iter()
+        .map(|square| square
+             .iter()
+             .flatten()
+             .skip(idx*cube.len())
+             .take(cube.len())
+             .copied()
+             .collect())
+        .collect()
+}
+
+pub fn set_x_z_plane<T: Copy>(cube: &mut Cube<T>, square: &Square<T>, idx: usize) {
+    let size = cube.len();
+    cube
+        .iter_mut()
+        .map::<Line<&mut T>, _>(|square| square
+             .iter_mut()
+             .flatten()
+             .skip(idx*size)
+             .take(size)
+             .collect())
+        .flatten()
+        .zip(square.iter().flatten())
+        .for_each(|(c, s)| *c = *s);
+}
 
 #[cfg(test)]
 mod tests {
@@ -193,5 +283,153 @@ mod tests {
         rotate_180(&mut actual);
 
         assert_eq!(true, vec_compare(&actual, &expected));
+    }
+
+    fn get_data_cube() -> Vec<Vec<Vec<u32>>> {
+        vec![
+            vec![
+                vec![1, 2, 3],
+                vec![4, 5, 6],
+                vec![7, 8, 9],
+            ],
+            vec! [
+                vec![10, 11, 12],
+                vec![13, 14, 15],
+                vec![16, 17, 18],
+            ],
+            vec![
+                vec![19, 20, 21],
+                vec![22, 23, 24],
+                vec![25, 26, 27],
+            ]
+        ]
+    }
+
+    #[test]
+    fn get_x_y_plane_should_get_x_y_plane() {
+        let mut cube = get_data_cube();
+
+        let first_plane = get_x_y_plane(&mut cube, 0);
+
+        assert_eq!(true, vec_compare(&first_plane, &vec![
+                                     vec![1, 2, 3],
+                                     vec![4, 5, 6],
+                                     vec![7, 8, 9],
+        ]));
+
+        let second_plane = get_x_y_plane(&mut cube, 1);
+
+        assert_eq!(true, vec_compare(&second_plane, &vec![
+                                     vec![10, 11, 12],
+                                     vec![13, 14, 15],
+                                     vec![16, 17, 18],
+        ]));
+
+        let third_plane = get_x_y_plane(&mut cube, 2);
+
+        assert_eq!(true, vec_compare(&third_plane, &vec![
+                                     vec![19, 20, 21],
+                                     vec![22, 23, 24],
+                                     vec![25, 26, 27],
+        ]));
+    }
+
+    #[test]
+    fn get_y_z_plane_should_get_y_z_plane() {
+        let mut cube = get_data_cube();
+
+        let first_plane = get_y_z_plane(&mut cube, 0);
+
+        assert_eq!(true, vec_compare(&first_plane, &vec![
+                                     vec![1, 4, 7],
+                                     vec![10, 13, 16],
+                                     vec![19, 22, 25],
+        ]));
+
+        let second_plane = get_y_z_plane(&mut cube, 1);
+
+        assert_eq!(true, vec_compare(&second_plane, &vec![
+                                     vec![2, 5, 8],
+                                     vec![11, 14, 17],
+                                     vec![20, 23, 26],
+        ]));
+
+        let third_plane = get_y_z_plane(&mut cube, 2);
+
+        assert_eq!(true, vec_compare(&third_plane, &vec![
+                                     vec![3, 6, 9],
+                                     vec![12, 15, 18],
+                                     vec![21, 24, 27],
+        ]));
+    }
+
+    #[test]
+    fn get_x_z_plane_should_get_x_z_plane() {
+        let mut cube = get_data_cube();
+
+        let first_plane = get_x_z_plane(&mut cube, 0);
+
+        assert_eq!(true, vec_compare(&first_plane, &vec![
+                                     vec![1, 2, 3],
+                                     vec![10, 11, 12],
+                                     vec![19, 20, 21],
+        ]));
+
+        let second_plane = get_x_z_plane(&mut cube, 1);
+
+        assert_eq!(true, vec_compare(&second_plane, &vec![
+                                     vec![4, 5, 6],
+                                     vec![13, 14, 15],
+                                     vec![22, 23, 24],
+        ]));
+
+        let third_plane = get_x_z_plane(&mut cube, 2);
+
+        assert_eq!(true, vec_compare(&third_plane, &vec![
+                                     vec![7, 8, 9],
+                                     vec![16, 17, 18],
+                                     vec![25, 26, 27],
+        ]));
+    }
+
+    #[test]
+    fn set_x_y_plane_should_set_x_y_plane() {
+        let mut cube = get_data_cube();
+
+        let first = get_x_y_plane(&mut cube, 0);
+
+        set_x_y_plane(&mut cube, &first, 1);
+        set_x_y_plane(&mut cube, &first, 2);
+
+        first.iter().flatten().for_each(|x| println!("{}", x));
+
+        assert_eq!(true, vec_compare(&first, &get_x_y_plane(&mut cube, 1)));
+        assert_eq!(true, vec_compare(&first, &get_x_y_plane(&mut cube, 2)));
+    }
+
+    #[test]
+    fn set_y_z_plane_should_set_y_z_plane() {
+        let mut cube = get_data_cube();
+
+        let first = get_y_z_plane(&mut cube, 0);
+
+        set_y_z_plane(&mut cube, &first, 1);
+        set_y_z_plane(&mut cube, &first, 2);
+
+        assert_eq!(true, vec_compare(&first, &get_y_z_plane(&mut cube, 1)));
+        assert_eq!(true, vec_compare(&first, &get_y_z_plane(&mut cube, 2)));
+    }
+
+    #[test]
+    fn set_x_z_plane_should_set_x_z_plane() {
+        let mut cube = get_data_cube();
+
+        let first = get_x_z_plane(&mut cube, 0);
+
+        set_x_z_plane(&mut cube, &first, 1);
+        set_x_z_plane(&mut cube, &first, 2);
+
+        assert_eq!(true, vec_compare(&first, &get_x_z_plane(&mut cube, 1)));
+        assert_eq!(true, vec_compare(&first, &get_x_z_plane(&mut cube, 2)));
     }
 }
