@@ -1,3 +1,7 @@
+type Line<T> = Vec<T>;
+type Square<T> = Vec<Line<T>>;
+type Cube<T> = Vec<Square<T>>;
+
 pub fn reverse_rows<T>(vector: &mut Vec<Vec<T>>) {
     for row in vector.iter_mut() {
         row.reverse();
@@ -27,7 +31,7 @@ pub fn transpose<T: Copy>(vector: &mut Vec<Vec<T>>) {
         .iter_mut()
         .flatten()
         .zip(transpose.iter().flatten())
-        .for_each(|(mut v, t)| *v = *t);
+        .for_each(|(v, t)| *v = *t);
 }
 
 pub fn rotate90<T: Copy>(vector: &mut Vec<Vec<T>>) {
