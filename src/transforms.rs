@@ -8,7 +8,7 @@ pub fn reverse_rows<T>(vector: &mut Vec<Vec<T>>) {
     }
 }
 
-pub fn reverse_columns<T: Copy>(vector: &mut Vec<Vec<T>>) {
+pub fn reverse_columns<T>(vector: &mut Vec<Vec<T>>) {
     vector.reverse();
 }
 
