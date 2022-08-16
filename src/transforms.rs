@@ -9,9 +9,7 @@ pub fn reverse_rows<T>(vector: &mut Vec<Vec<T>>) {
 }
 
 pub fn reverse_columns<T: Copy>(vector: &mut Vec<Vec<T>>) {
-    transpose(vector);
-    reverse_rows(vector);
-    transpose(vector);
+    vector.reverse();
 }
 
 pub fn transpose<T: Copy>(vector: &mut Vec<Vec<T>>) {
@@ -47,14 +45,6 @@ pub fn rotate_minus90<T: Copy>(vector: &mut Vec<Vec<T>>) {
 pub fn rotate_180<T: Copy>(vector: &mut Vec<Vec<T>>) {
     reverse_columns(vector);
     reverse_rows(vector);
-}
-
-fn assign_plane<T: Copy>(first: &mut Square<T>, second: &Square<T>) {
-    first
-        .iter_mut()
-        .flatten()
-        .zip(second.iter().flatten())
-        .for_each(|(f, s)| *f = *s);
 }
 
 pub fn get_x_y_plane<T: Copy>(cube: &mut Vec<Vec<Vec<T>>>, idx: usize) -> Vec<Vec<T>> {
@@ -431,5 +421,40 @@ mod tests {
 
         assert_eq!(true, vec_compare(&first, &get_x_z_plane(&mut cube, 1)));
         assert_eq!(true, vec_compare(&first, &get_x_z_plane(&mut cube, 2)));
+    }
+
+    use test::Bencher;
+
+    #[bench]
+    fn bench_transpose(b: &mut Bencher) {
+        let mut square = vec![
+            vec![1, 2, 3],
+            vec![4, 5, 6],
+            vec![7, 8, 9],
+        ];
+
+        b.iter(|| { transpose(&mut square) });
+    }
+    
+    #[bench]
+    fn bench_reverse_rows(b: &mut Bencher) {
+        let mut square = vec![
+            vec![1, 2, 3],
+            vec![4, 5, 6],
+            vec![7, 8, 9],
+        ];
+
+        b.iter(|| { reverse_rows(&mut square) });
+    }
+
+    #[bench]
+    fn bench_reverse_columns(b: &mut Bencher) {
+        let mut square = vec![
+            vec![1, 2, 3],
+            vec![4, 5, 6],
+            vec![7, 8, 9],
+        ];
+
+        b.iter(|| { reverse_columns(&mut square) });
     }
 }
