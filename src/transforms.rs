@@ -13,23 +13,13 @@ pub fn reverse_columns<T: Copy>(vector: &mut Vec<Vec<T>>) {
 }
 
 pub fn transpose<T: Copy>(vector: &mut Vec<Vec<T>>) {
-    let transpose: Vec<Vec<T>> = vector
-        .iter()
-        .enumerate()
-        .map(|(i, _)| vector
-             .iter()
-             .flatten()
-             .skip(i)
-             .step_by(vector.len())
-             .copied()
-             .collect())
-        .collect();
-
-    vector
-        .iter_mut()
-        .flatten()
-        .zip(transpose.iter().flatten())
-        .for_each(|(v, t)| *v = *t);
+    for n in 0..vector.len() {
+        for m in n+1..vector.len() {
+            let temp = vector[n][m];
+            vector[n][m] = vector[m][n];
+            vector[m][n] = temp;
+        }
+    }
 }
 
 pub fn rotate90<T: Copy>(vector: &mut Vec<Vec<T>>) {
