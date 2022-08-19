@@ -34,3 +34,9 @@ pub fn basic_move(rc: &mut RubiksCube3x3) {
     rc.single_r_prime();
     rc.single_u_prime();
 }
+
+pub fn r_u_l(rc: &mut RubiksCube3x3) {
+    rc.single_r();
+    rc.single_u();
+    rc.single_l();
+}
