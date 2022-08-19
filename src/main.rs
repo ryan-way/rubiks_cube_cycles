@@ -6,16 +6,20 @@ mod transforms;
 mod rubiks;
 mod algorithms;
 
+use std::collections::HashMap;
 use algorithms::*;
 use rubiks::*;
 
-fn run_repeated_test<F: Fn(&mut RubiksCube3x3)-> ()>(s: &str, f: F) {
+
+fn run_ops_until_solved<F: Fn(&mut RubiksCube3x3)-> ()>(ops: &Vec<F>) -> i32 {
     let mut rc = RubiksCube3x3::new();
 
     let mut count = 0;
 
     loop {
-        f(&mut rc);
+        for op in ops {
+            op(&mut rc);
+        }
 
         count += 1;
 
@@ -24,13 +28,64 @@ fn run_repeated_test<F: Fn(&mut RubiksCube3x3)-> ()>(s: &str, f: F) {
         }
     }
 
-    println!("{} took: {}", s, count);
+    count
 }
 
+fn search_for_and_run_tests<'a, F: Fn(&mut RubiksCube3x3)>(start_depth: i32,
+                                                       depth: i32, 
+                                                       operation_pool: &'a HashMap<String, F>,
+                                                       ops_name: &mut Vec<String>,
+                                                       ops: &mut Vec<&'a F>) {
+    if start_depth == depth {
+        let count = run_ops_until_solved(ops);
+        println!("{0:<10} {1:<10} {2:<10}",
+                 format!("depth: {}", depth),
+                 &count,
+                 &ops_name.join(""));
+        return;
+    }
+
+    for (op_name, op) in operation_pool.iter() {
+        ops_name.push(op_name.clone());
+        ops.push(op);
+        search_for_and_run_tests(start_depth+1,
+                                             depth,
+                                             operation_pool,
+                                             ops_name,
+                                             ops);
+        ops_name.pop();
+        ops.pop();
+    }
+}
+
+fn generate_and_run_tests<F: Fn(&mut RubiksCube3x3)>(depth: i32,
+                                                     operation_pool: &HashMap<String, F>) {
+    let mut ops: Vec<&F> = vec![];
+    let mut ops_name: Vec<String> = vec![];
+    search_for_and_run_tests(0,
+                             depth,
+                             operation_pool,
+                             &mut ops_name,
+                             &mut ops)
+}
+
+
 fn main() {
-    run_repeated_test("One of everthing", one_of_everything);
-    run_repeated_test("One of everthing prime", one_of_everything_prime);
-    run_repeated_test("RU", r_u);
-    run_repeated_test("One of everything really", one_of_everything_really);
-    run_repeated_test("Basic Move", basic_move);
+    let mut operation_pool: HashMap<String, &dyn Fn(&mut RubiksCube3x3)> = HashMap::new();
+    operation_pool.insert(String::from("R"), &|rc: &mut RubiksCube3x3| { rc.single_r()});
+    operation_pool.insert(String::from("U"), &|rc: &mut RubiksCube3x3| { rc.single_u()});
+    operation_pool.insert(String::from("F"), &|rc: &mut RubiksCube3x3| { rc.single_f()});
+    operation_pool.insert(String::from("D"), &|rc: &mut RubiksCube3x3| { rc.single_d()});
+    operation_pool.insert(String::from("L"), &|rc: &mut RubiksCube3x3| { rc.single_l()});
+    operation_pool.insert(String::from("B"), &|rc: &mut RubiksCube3x3| { rc.single_b()});
+
+    operation_pool.insert(String::from("R_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_r_prime()});
+    operation_pool.insert(String::from("U_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_u_prime()});
+    operation_pool.insert(String::from("F_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_f_prime()});
+    operation_pool.insert(String::from("D_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_d_prime()});
+    operation_pool.insert(String::from("L_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_l_prime()});
+    operation_pool.insert(String::from("B_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_b_prime()});
+
+    generate_and_run_tests(3, &operation_pool);
+
 }
