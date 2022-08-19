@@ -32,10 +32,10 @@ pub fn rotate_minus90<T: Copy>(vector: &mut Vec<Vec<T>>) {
     reverse_columns(vector);
 }
 
-pub fn rotate_180<T: Copy>(vector: &mut Vec<Vec<T>>) {
-    reverse_columns(vector);
-    reverse_rows(vector);
-}
+// pub fn rotate_180<T: Copy>(vector: &mut Vec<Vec<T>>) {
+//     reverse_columns(vector);
+//     reverse_rows(vector);
+// }
 
 pub fn get_x_y_plane<T: Copy>(cube: &mut Vec<Vec<Vec<T>>>, idx: usize) -> Vec<Vec<T>> {
     if cube.len() < idx {
