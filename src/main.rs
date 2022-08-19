@@ -4,10 +4,8 @@ extern crate test;
 
 mod transforms;
 mod rubiks;
-mod algorithms;
 
 use std::collections::HashMap;
-use algorithms::*;
 use rubiks::*;
 
 
@@ -46,6 +44,14 @@ fn search_for_and_run_tests<'a, F: Fn(&mut RubiksCube3x3)>(start_depth: i32,
     }
 
     for (op_name, op) in operation_pool.iter() {
+        if ops.len() >= 3 {
+            if ops_name[ops_name.len()-1] == *op_name
+                && ops_name[ops_name.len()-2] == *op_name
+                    && ops_name[ops_name.len()-3] == *op_name {
+                continue;
+            }
+        }
+
         ops_name.push(op_name.clone());
         ops.push(op);
         search_for_and_run_tests(start_depth+1,
