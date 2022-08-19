@@ -84,6 +84,9 @@ fn main() {
     operation_pool.insert(String::from("D"), &|rc: &mut RubiksCube3x3| { rc.single_d()});
     operation_pool.insert(String::from("L"), &|rc: &mut RubiksCube3x3| { rc.single_l()});
     operation_pool.insert(String::from("B"), &|rc: &mut RubiksCube3x3| { rc.single_b()});
+    operation_pool.insert(String::from("M"), &|rc: &mut RubiksCube3x3| { rc.single_m()});
+    operation_pool.insert(String::from("E"), &|rc: &mut RubiksCube3x3| { rc.single_e()});
+    operation_pool.insert(String::from("S"), &|rc: &mut RubiksCube3x3| { rc.single_s()});
 
     operation_pool.insert(String::from("R_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_r_prime()});
     operation_pool.insert(String::from("U_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_u_prime()});
@@ -91,7 +94,64 @@ fn main() {
     operation_pool.insert(String::from("D_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_d_prime()});
     operation_pool.insert(String::from("L_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_l_prime()});
     operation_pool.insert(String::from("B_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_b_prime()});
+    operation_pool.insert(String::from("M_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_m_prime()});
+    operation_pool.insert(String::from("E_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_e_prime()});
+    operation_pool.insert(String::from("S_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_s_prime()});
 
-    generate_and_run_tests(3, &operation_pool);
+    for depth in 1..8 {
+        generate_and_run_tests(depth, &operation_pool);
+    }
 
+}
+
+#[cfg(test)]
+mod tests {
+    use test::Bencher;
+    use super::*;
+
+    fn bench_generate_and_run_tests(b: &mut Bencher, iterations: i32) {
+        let mut operation_pool: HashMap<String, &dyn Fn(&mut RubiksCube3x3)> = HashMap::new();
+        operation_pool.insert(String::from("R"), &|rc: &mut RubiksCube3x3| { rc.single_r()});
+        operation_pool.insert(String::from("U"), &|rc: &mut RubiksCube3x3| { rc.single_u()});
+        operation_pool.insert(String::from("F"), &|rc: &mut RubiksCube3x3| { rc.single_f()});
+        operation_pool.insert(String::from("D"), &|rc: &mut RubiksCube3x3| { rc.single_d()});
+        operation_pool.insert(String::from("L"), &|rc: &mut RubiksCube3x3| { rc.single_l()});
+        operation_pool.insert(String::from("B"), &|rc: &mut RubiksCube3x3| { rc.single_b()});
+
+        operation_pool.insert(String::from("R_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_r_prime()});
+        operation_pool.insert(String::from("U_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_u_prime()});
+        operation_pool.insert(String::from("F_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_f_prime()});
+        operation_pool.insert(String::from("D_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_d_prime()});
+        operation_pool.insert(String::from("L_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_l_prime()});
+        operation_pool.insert(String::from("B_Prime"), &|rc: &mut RubiksCube3x3| { rc.single_b_prime()});
+
+        b.iter(|| { 
+            generate_and_run_tests(iterations, &operation_pool)
+        });
+    }
+
+    #[bench]
+    fn bench_generate_and_run_tests_1(b: &mut Bencher) {
+        bench_generate_and_run_tests(b, 1);
+    }
+
+    #[bench]
+    fn bench_generate_and_run_tests_2(b: &mut Bencher) {
+        bench_generate_and_run_tests(b, 2);
+    }
+
+    #[bench]
+    fn bench_generate_and_run_tests_3(b: &mut Bencher) {
+        bench_generate_and_run_tests(b, 3);
+    }
+
+    #[bench]
+    fn bench_generate_and_run_tests_4(b: &mut Bencher) {
+        bench_generate_and_run_tests(b, 4);
+    }
+
+
+    #[bench]
+    fn sleep_for_2_sec(b: &mut Bencher) {
+    }
 }
