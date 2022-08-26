@@ -31,73 +31,68 @@ Below are the largest 10 cycles of depths 1 to 6. Largest cycle being defined
 as the number of iterations required for a move lost to return the cube
 to a solved state.
 
-| Depth    | Iterations    | Move List    |
-|---------------- | --------------- | --------------- |
-| 1 |   4 |          U_Prime |   
-| 1 |   4 |          U |         
-| 1 |   4 |          S_Prime |   
-| 1 |   4 |          S |         
-| 1 |   4 |          R_Prime |   
-| 1 |   4 |          R |         
-| 1 |   4 |          M_Prime |   
-| 1 |   4 |          M |         
-| 1 |   4 |          L_Prime |   
-| 1 |   4 |          L |         
-
-| 2 |   35 |         UR |        
-| 2 |   35 |         U_PrimeR_Prime |
-| 2 |   35 |         U_PrimeL |  
-| 2 |   35 |         U_PrimeF |  
-| 2 |   35 |         U_PrimeB_Prime |
-| 2 |   35 |         UL_Prime |  
-| 2 |   35 |         UF_Prime |  
-| 2 |   35 |         UB |        
-| 2 |   35 |         RU |        
-| 2 |   35 |         R_PrimeU_Prime |
-
-| 3 |   140 |        US_PrimeB | 
-| 3 |   140 |        USF_Prime | 
-| 3 |   140 |        URM_Prime | 
-| 3 |   140 |        URE_Prime | 
-| 3 |   140 |        U_PrimeS_PrimeF |
-| 3 |   140 |        U_PrimeSB_Prime |
-| 3 |   140 |        U_PrimeR_PrimeM |
-| 3 |   140 |        U_PrimeR_PrimeE |
-| 3 |   140 |        U_PrimeMR_Prime |
-| 3 |   140 |        U_PrimeM_PrimeL |
-
-| 4 |   420 |        US_PrimeF_PrimeB_Prime |
-| 4 |   420 |        US_PrimeF_PrimeB |
-| 4 |   420 |        US_PrimeFL_Prime |
-| 4 |   420 |        US_PrimeFB_Prime |
-| 4 |   420 |        US_PrimeFB |
-| 4 |   420 |        US_PrimeB_PrimeF_Prime |
-| 4 |   420 |        US_PrimeB_PrimeF |
-| 4 |   420 |        US_PrimeBF_Prime |
-| 4 |   420 |        US_PrimeBF |
-| 4 |   420 |        USF_PrimeB_Prime |
-
-| 5 |   420 |        UUS_PrimeR_PrimeD_Prime |
-| 5 |   420 |        UUS_PrimeRD |
-| 5 |   420 |        UUS_PrimeF_PrimeD |
-| 5 |   420 |        UUS_PrimeD_PrimeL_Prime |
-| 5 |   420 |        UUS_PrimeD_PrimeB_Prime |
-| 5 |   420 |        UUS_PrimeDL |
-| 5 |   420 |        UUS_PrimeDF_Prime |
-| 5 |   420 |        UUS_PrimeB_PrimeD_Prime |
-| 5 |   420 |        UUSL_PrimeD |
-| 5 |   420 |        UUSLD_Prime |
-
-| 6 |   420 |        UUUS_PrimeF_PrimeB_Prime |
-| 6 |   420 |        UUUS_PrimeF_PrimeB |
-| 6 |   420 |        UUUS_PrimeFB_Prime |
-| 6 |   420 |        UUUS_PrimeFB |
-| 6 |   420 |        UUUS_PrimeB_PrimeF_Prime |
-| 6 |   420 |        UUUS_PrimeB_PrimeF |
-| 6 |   420 |        UUUS_PrimeBL |
-| 6 |   420 |        UUUS_PrimeBF_Prime |
-| 6 |   420 |        UUUS_PrimeBF |
-| 6 |   420 |        UUUSF_PrimeR_Prime |
+| Depth | Iterations | Move List                  |
+|------ | ---------- | -------------------------- |
+|     1 |          4 |                    U_Prime |   
+|     1 |          4 |                          U |         
+|     1 |          4 |                    S_Prime |   
+|     1 |          4 |                          S |         
+|     1 |          4 |                    R_Prime |   
+|     1 |          4 |                          R |         
+|     1 |          4 |                    M_Prime |   
+|     1 |          4 |                          M |         
+|     1 |          4 |                    L_Prime |   
+|     1 |          4 |                          L |         
+|     2 |         35 |                         UR |        
+|     2 |         35 |             U_PrimeR_Prime |
+|     2 |         35 |                   U_PrimeL |  
+|     2 |         35 |                   U_PrimeF |  
+|     2 |         35 |             U_PrimeB_Prime |
+|     2 |         35 |                   UL_Prime |  
+|     2 |         35 |                   UF_Prime |  
+|     2 |         35 |                         UB |        
+|     2 |         35 |                         RU |        
+|     2 |         35 |             R_PrimeU_Prime |
+|     3 |        140 |                  US_PrimeB | 
+|     3 |        140 |                  USF_Prime | 
+|     3 |        140 |                  URM_Prime | 
+|     3 |        140 |                  URE_Prime | 
+|     3 |        140 |            U_PrimeS_PrimeF |
+|     3 |        140 |            U_PrimeSB_Prime |
+|     3 |        140 |            U_PrimeR_PrimeM |
+|     3 |        140 |            U_PrimeR_PrimeE |
+|     3 |        140 |            U_PrimeMR_Prime |
+|     3 |        140 |            U_PrimeM_PrimeL |
+|     4 |        420 |     US_PrimeF_PrimeB_Prime |
+|     4 |        420 |           US_PrimeF_PrimeB |
+|     4 |        420 |           US_PrimeFL_Prime |
+|     4 |        420 |           US_PrimeFB_Prime |
+|     4 |        420 |                 US_PrimeFB |
+|     4 |        420 |     US_PrimeB_PrimeF_Prime |
+|     4 |        420 |           US_PrimeB_PrimeF |
+|     4 |        420 |           US_PrimeBF_Prime |
+|     4 |        420 |                 US_PrimeBF |
+|     4 |        420 |           USF_PrimeB_Prime |
+|     5 |        420 |    UUS_PrimeR_PrimeD_Prime |
+|     5 |        420 |                UUS_PrimeRD |
+|     5 |        420 |          UUS_PrimeF_PrimeD |
+|     5 |        420 |    UUS_PrimeD_PrimeL_Prime |
+|     5 |        420 |    UUS_PrimeD_PrimeB_Prime |
+|     5 |        420 |                UUS_PrimeDL |
+|     5 |        420 |          UUS_PrimeDF_Prime |
+|     5 |        420 |    UUS_PrimeB_PrimeD_Prime |
+|     5 |        420 |                UUSL_PrimeD |
+|     5 |        420 |                UUSLD_Prime |
+|     6 |        420 |   UUUS_PrimeF_PrimeB_Prime |
+|     6 |        420 |         UUUS_PrimeF_PrimeB |
+|     6 |        420 |         UUUS_PrimeFB_Prime |
+|     6 |        420 |               UUUS_PrimeFB |
+|     6 |        420 |   UUUS_PrimeB_PrimeF_Prime |
+|     6 |        420 |         UUUS_PrimeB_PrimeF |
+|     6 |        420 |               UUUS_PrimeBL |
+|     6 |        420 |         UUUS_PrimeBF_Prime |
+|     6 |        420 |               UUUS_PrimeBF |
+|     6 |        420 |         UUUSF_PrimeR_Prime |
 
 
 ## Refections
