@@ -1,5 +1,14 @@
 # Rubiks Cube Cycles
 
+## Development
+
+1) Clone
+`git clone https://github.com/ryan-way-system-design/middleware.git`
+2) Run
+`cargo run`
+3) Test
+`cargo test`
+
 ## Background
 
 Rubiks cube have an interesting property:
